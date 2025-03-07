@@ -190,18 +190,135 @@ header {
     display: block;
 }
 
-/* 히어로 섹션 */
+/* 히어로 섹션 수정 */
 .hero {
     height: 100vh; /* 전체 화면 높이 */
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('./images/hero-bg.png') center/cover no-repeat;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: #fff;
+    position: relative;
     padding-top: 80px; /* 헤더 높이만큼 패딩 추가 */
     box-sizing: border-box; /* 패딩을 높이에 포함 */
-    margin: 0;
+    overflow: hidden; /* 슬라이드 오버플로우 숨김 */
+}
+
+/* 슬라이더 컨테이너 */
+.slider-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* 슬라이드 */
+.slide {
+    width: 100%;
+    height: 100%;
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* 슬라이드 배경 */
+.slide-bg {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+/* 어두운 오버레이 */
+.slide-bg::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+}
+
+/* 활성 슬라이드 */
+.slide.active {
+    display: block;
+}
+
+/* 페이드 효과 */
+.fade {
+    animation-name: fade;
+    animation-duration: 2s; /* 페이드 효과 지속 시간을 2초로 늘림 */
+}
+
+@keyframes fade {
+    from {opacity: 0}
+    to {opacity: 1}
+}
+
+/* 슬라이드가 사라질 때 페이드 아웃 효과 */
+.fade-out {
+    animation-name: fadeOut;
+    animation-duration: 2s; /* 페이드 아웃 지속 시간 1초 */
+}
+
+@keyframes fadeOut {
+    from {opacity: 1}
+    to {opacity: 0}
+}
+
+/* 이전/다음 버튼 */
+.prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    margin-top: -22px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.6s ease;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 20;
+}
+
+.next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+.prev {
+    left: 0;
+}
+
+.prev:hover, .next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* 도트 인디케이터 */
+.dots-container {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    z-index: 20;
+}
+
+.dot {
+    cursor: pointer;
+    height: 12px;
+    width: 12px;
+    margin: 0 5px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.6s ease;
+}
+
+.dot.active, .dot:hover {
+    background-color: #fff;
 }
 
 .hero-content {
@@ -318,6 +435,11 @@ footer {
     .nav-menu {
         width: 100%;
     }
+    
+    .prev, .next {
+        padding: 10px;
+        font-size: 14px;
+    }
 }
 
 /* 소개 페이지 스타일 */
@@ -398,6 +520,14 @@ footer {
     max-width: 100%;
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* 서명 스타일 추가 */
+.signature {
+    text-align: right;
+    font-style: italic;
+    margin-top: 10px;
+    color: #555;
 }
 
 /* 메뉴 아이템 스타일 */
@@ -677,4 +807,180 @@ footer {
     .ceo-image {
         flex: 0 0 100%;
     }
+}
+
+/* 전체 너비 컨테이너 (여백 없음) */
+.container-full {
+    width: 100%;
+    padding: 0 30px;
+}
+
+/* 히어로 슬로건 스타일 */
+.hero-slogan {
+    position: absolute;
+    top: 120px; /* 헤더 높이(80px) + 추가 여백 */
+    left: 30px;
+    text-align: left;
+    z-index: 30; /* 슬라이더 위에 표시되도록 z-index 증가 */
+}
+
+.hero-slogan h2 {
+    font-size: 2.5rem;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    line-height: 1.2;
+    margin: 0;
+    text-align: left;
+}
+
+/* 미디어 쿼리 */
+@media screen and (max-width: 768px) {
+    .hero-slogan {
+        left: 20px;
+    }
+    
+    .hero-slogan h2 {
+        font-size: 2rem;
+    }
+    
+    .container-full {
+        padding: 0 20px;
+    }
+}
+
+/* 모달 추가 */
+/* 모달 스타일 */
+.menu-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 2000;
+    overflow: auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: auto;
+    padding: 0;
+    width: 80%;
+    max-width: 900px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.modal-header {
+    padding: 15px 20px;
+    background-color: #000;
+    color: #D4AF37;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #D4AF37;
+}
+
+.close-modal {
+    color: #D4AF37;
+    background: none;
+    border: none;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.close-modal:hover {
+    color: #fff;
+}
+
+.modal-body {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+.modal-image {
+    flex: 0 0 50%;
+    padding-right: 20px;
+}
+
+.modal-image img {
+    width: 100%;
+    border-radius: 8px;
+    object-fit: cover;
+    max-height: 400px;
+}
+
+.modal-details {
+    flex: 0 0 50%;
+    padding-left: 20px;
+}
+
+.modal-details .menu-item-price {
+    margin: 15px 0;
+    font-size: 1.5rem;
+}
+
+.modal-description {
+    margin-bottom: 20px;
+    line-height: 1.8;
+    color: #555;
+}
+
+/* 모달 페이드 인 애니메이션 */
+@keyframes modalFadeIn {
+    from {opacity: 0}
+    to {opacity: 1}
+}
+
+.modal-fade-in {
+    animation: modalFadeIn 0.4s;
+}
+
+/* 반응형 스타일 */
+@media screen and (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+    }
+
+    .modal-body {
+        flex-direction: column;
+    }
+
+    .modal-image, .modal-details {
+        flex: 0 0 100%;
+        padding: 0;
+    }
+
+    .modal-image {
+        margin-bottom: 20px;
+    }
+}
+
+/* 상차림 이미지 스타일 */
+.course-image {
+    margin-bottom: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.course-image img {
+    width: 100%;
+    height: auto;
+    display: block;
 }
